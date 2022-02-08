@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 1,
-  "iteration": 1644361293982,
+  "iteration": 1644361293984,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -154,6 +154,64 @@
       ],
       "title": "Active users",
       "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.0-beta1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "gf8dXm-nz"
+          },
+          "query": "from(bucket: \"bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"bigbluebutton_recordings\")\n  |> filter(fn: (r) => r[\"_field\"] == \"recordings_count\")\n  |> filter(fn: (r) => contains(value: r[\"b3lb_host\"], set: ${servers:json}))\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(every: 10s, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Current recordings",
+      "type": "stat"
     }
   ],
   "refresh": "10s",
@@ -166,10 +224,12 @@
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "http://localhost/bigbluebutton",
+            "http://localhost:8080/bigbluebutton"
           ],
           "value": [
-            "$__all"
+            "http://localhost/bigbluebutton",
+            "http://localhost:8080/bigbluebutton"
           ]
         },
         "definition": "import \"influxdata/influxdb/v1\"\nv1.tagValues(\n    bucket: v.bucket,\n    tag: \"b3lb_host\",\n    predicate: (r) => true,\n    start: -1d\n)",
@@ -197,6 +257,6 @@
   "timezone": "",
   "title": "B3LB cluster monitoring",
   "uid": "HwOXXi-7k",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
