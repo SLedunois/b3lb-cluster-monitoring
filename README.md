@@ -6,6 +6,7 @@ Functional metrics:
 - active meetings stat;
 - active users stat;
 - recording currently stored stat;
+- active voice participants count;
 - active users over active meetings graph;
 
 <p align="center">
