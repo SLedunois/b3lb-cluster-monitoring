@@ -14,6 +14,11 @@ Functional metrics:
 <img src="assets/cluster_usage.png" alt="Cluster usage" />
 </p>
 
+API status:
+<p align="center">
+<img src="assets/API_status.png" alt="API status" />
+</p>
+
 Technical metrics:
 - CPU average over participants;
 - Memory average over participants;
