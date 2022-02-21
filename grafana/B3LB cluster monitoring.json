@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 5,
-  "iteration": 1645470970602,
+  "iteration": 1645470970604,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -277,6 +277,87 @@
         "x": 0,
         "y": 16
       },
+      "id": 20,
+      "panels": [],
+      "title": "API Status",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 100,
+            "lineWidth": 0
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 22,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "query": "from(bucket: \"bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"bigbluebutton_api\")\n  |> filter(fn: (r) => r[\"_field\"] == \"online\")\n  |> group(columns: [\"b3lb_host\"])\n  |> aggregateWindow(every: 10s, fn: sum, createEmpty: true)\n  |> fill(value: 0, column: \"_value\")\n  |> yield(name: \"_value\")\n\n",
+          "refId": "A"
+        }
+      ],
+      "title": "API status",
+      "type": "status-history"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
       "id": 10,
       "panels": [],
       "title": "Cluster metrics over participants",
@@ -366,7 +447,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 23
       },
       "id": 12,
       "options": {
@@ -480,7 +561,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 34
       },
       "id": 14,
       "options": {
@@ -606,7 +687,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 45
       },
       "id": 16,
       "options": {
@@ -665,13 +746,13 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "B3LB cluster monitoring",
   "uid": "HwOXXi-7k",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
