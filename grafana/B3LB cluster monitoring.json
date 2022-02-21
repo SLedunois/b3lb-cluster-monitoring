@@ -633,7 +633,7 @@
           "refId": "A"
         }
       ],
-      "title": "Bandwidth over participants",
+      "title": "Bandwidth (average) over participants",
       "type": "timeseries"
     }
   ],
