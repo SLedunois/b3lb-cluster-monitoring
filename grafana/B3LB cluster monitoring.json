@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 5,
-  "iteration": 1645209946721,
+  "iteration": 1645470970602,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -68,7 +68,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 1
       },
@@ -130,8 +130,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 6,
         "y": 1
       },
       "id": 6,
@@ -192,8 +192,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 12,
         "y": 1
       },
       "id": 8,
@@ -223,6 +223,68 @@
         }
       ],
       "title": "Current recordings",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${source}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.0-beta1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${source}"
+          },
+          "query": "from(bucket: \"bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"bigbluebutton_meetings\")\n  |> filter(fn: (r) => r[\"_field\"] == \"voice_participant_count\")\n  |> filter(fn: (r) => contains(value: r[\"b3lb_host\"], set: ${servers:json}))\n  |> group(columns: [\"_measurement\"])\n  |> aggregateWindow(every: 10s, fn: sum, createEmpty: false)\n  |> yield(name: \"sum\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Voice participant count",
       "type": "stat"
     },
     {
